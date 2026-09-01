@@ -7,4 +7,4 @@
     env_file:
       - ./.env
     volumes:
-      - ./data:/app/Kradis/data
+      - ./data:/app/Kradis/data/logs
