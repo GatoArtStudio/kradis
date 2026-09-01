@@ -19,6 +19,6 @@ FROM base AS final
 USER root
 WORKDIR /app
 COPY --from=publish /app/publish .
-RUN mkdir -p data/logs && chown -R $APP_UID:$APP_UID data
+RUN mkdir data && chown -R $APP_UID:$APP_UID data
 USER $APP_UID
 ENTRYPOINT ["dotnet", "Kradis.dll"]
