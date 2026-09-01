@@ -16,6 +16,9 @@ ARG BUILD_CONFIGURATION=Release
 RUN dotnet publish "./Kradis.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
+USER root
 WORKDIR /app
 COPY --from=publish /app/publish .
+RUN mkdir -p data/logs && chown -R $APP_UID:$APP_UID data
+USER $APP_UID
 ENTRYPOINT ["dotnet", "Kradis.dll"]
