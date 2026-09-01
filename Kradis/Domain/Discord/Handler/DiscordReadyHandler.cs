@@ -13,12 +13,15 @@ public class DiscordReadyHandler (
 {
     public Task StartAsync(CancellationToken cancellationToken)
     {
-        logger.LogInformation();
+        logger.LogInformation("Starting Discord ready handler.");
+        discordSocketClient.Ready += OnReadyAsync;
         return Task.CompletedTask;
     }
 
     public Task StopAsync(CancellationToken cancellationToken)
     {
+        logger.LogInformation("Stopping Discord ready handler.");
+        discordSocketClient.Ready -= OnReadyAsync;
         return Task.CompletedTask;
     }
 
