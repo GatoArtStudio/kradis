@@ -1,0 +1,7 @@
+﻿services:
+  kradis:
+    image: kradis
+    build:
+      context: .
+      dockerfile: Kradis/Dockerfile
+
