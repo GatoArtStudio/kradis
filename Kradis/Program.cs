@@ -44,11 +44,11 @@ builder.Services.AddSingleton(serviceProvider =>
     )
 );
 
-var handlersDiscordApplicationServices = typeof(Program).Assembly
+var discordApplicationHandlers = typeof(Program).Assembly
     .GetTypes()
     .Where(type => !type.IsAbstract && typeof(IDiscordHandler).IsAssignableFrom(type));
 
-handlersDiscordApplicationServices.ToList().ForEach(handler =>
+discordApplicationHandlers.ToList().ForEach(handler =>
 {
     Log.Information("Registering discord application handler {handlerName}", handler.Name);
     builder.Services.AddSingleton(typeof(IDiscordHandler), handler);
