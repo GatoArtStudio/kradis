@@ -54,6 +54,12 @@ public class DiscordSecurityCommand : InteractionModuleBase<SocketInteractionCon
             
             var guild = guildResult.Value;
 
+            if (guild.AntiSpamChannelId is not null && guild.AntiSpamChannelId == channel.Id)
+            {
+                await FollowupAsync("This channel is already configured; no changes were applied.");
+                return;
+            }
+
             var updatedAntiSpamChannelResult = guild.SetAntiSpamChannelId(channel.Id);
             if (updatedAntiSpamChannelResult.IsFailure)
             {
@@ -61,7 +67,7 @@ public class DiscordSecurityCommand : InteractionModuleBase<SocketInteractionCon
                 return;
             }
 
-            var updateGuildResult = await discordGuildService.UpdateAsync(guild, CancellationToken.None);
+            var updateGuildResult = await discordGuildService.UpdateAsync(updatedAntiSpamChannelResult.Value, CancellationToken.None);
             if (updateGuildResult.IsFailure)
             {
                 await FollowupAsync($"Failed to update guild configuration: {updateGuildResult.Error}");
@@ -98,6 +104,14 @@ public class DiscordSecurityCommand : InteractionModuleBase<SocketInteractionCon
             
             var guild = guildResult.Value;
 
+            if (guild.AntiSpamChannelId is null)
+            {
+                await FollowupAsync("The option you want to disable is already disabled.");
+                return;
+            }
+
+            var oldAntiSpamChannel = guild.AntiSpamChannelId;
+
             var updatedAntiSpamChannelResult = guild.SetAntiSpamChannelId(null);
             if (updatedAntiSpamChannelResult.IsFailure)
             {
@@ -105,14 +119,14 @@ public class DiscordSecurityCommand : InteractionModuleBase<SocketInteractionCon
                 return;
             }
 
-            var updateGuildResult = await discordGuildService.UpdateAsync(guild, CancellationToken.None);
+            var updateGuildResult = await discordGuildService.UpdateAsync(updatedAntiSpamChannelResult.Value, CancellationToken.None);
             if (updateGuildResult.IsFailure)
             {
                 await FollowupAsync($"Failed to update guild configuration: {updateGuildResult.Error}");
                 return;
             }
             
-            await FollowupAsync($"Successfully unconfigured anti-spam channel: {guildResult.Value.AntiSpamChannelId}");
+            await FollowupAsync($"Successfully unconfigured anti-spam channel: {oldAntiSpamChannel}");
         }
     }
 }
