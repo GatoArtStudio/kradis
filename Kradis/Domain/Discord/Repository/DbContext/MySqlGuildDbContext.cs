@@ -7,7 +7,7 @@ public class MySqlGuildDbContext : Microsoft.EntityFrameworkCore.DbContext
 {
     public DbSet<GuildModel> Guild => Set<GuildModel>();
     
-    public MySqlGuildDbContext(DbContextOptions options) : base(options) { }
+    public MySqlGuildDbContext(DbContextOptions<MySqlGuildDbContext> options) : base(options) { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
