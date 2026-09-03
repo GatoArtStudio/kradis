@@ -21,7 +21,7 @@ public class MySqlDiscordGuildRepository : IDiscordGuildRepository
     {
         try
         {
-            var value = await _context.Guild.AddAsync(guild, cancellationToken);
+            var value = _context.Guild.Add(guild);
             await _context.SaveChangesAsync(cancellationToken);
             return Result<GuildModel, string>.Ok(value.Entity);
         }
@@ -47,7 +47,9 @@ public class MySqlDiscordGuildRepository : IDiscordGuildRepository
 
     public async Task<Result<GuildModel, string>> GetAsync(Uuid7 guildUuid, CancellationToken cancellationToken)
     {
-        var entityEntry = await _context.Guild.FirstOrDefaultAsync(x => x.Id == guildUuid, cancellationToken);
+        var entityEntry = await _context.Guild
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Id == guildUuid, cancellationToken);
         if (entityEntry is null)
             return Result<GuildModel, string>.Fail("Guild not found");
         
