@@ -20,7 +20,7 @@ public class GuildConfiguration : IEntityTypeConfiguration<GuildModel>
 
         builder.Property(x => x.Id)
             .HasConversion(converter)
-            .HasColumnType("binary(36)")
+            .HasColumnType("binary(16)")
             .IsRequired();
 
         builder.Property(x => x.GuildId)
