@@ -34,11 +34,8 @@ public class Guild
         if (antiSpamChannelId is not null && antiSpamChannelId <= 0)
             return Result<Guild, string>.Fail("The anti-spam channel ID cannot be 0 or negative.");
 
-        var guild = new Guild(
-            Id,
-            antiSpamChannelId
-        );
+        AntiSpamChannelId = antiSpamChannelId;
         
-        return Result<Guild, string>.Ok(guild);
+        return Result<Guild, string>.Ok(this);
     }
 }
