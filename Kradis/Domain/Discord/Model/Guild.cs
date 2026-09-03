@@ -1,5 +1,4 @@
 using Kradis.Core.Pattern;
-using Medo;
 
 namespace Kradis.Domain.Discord.Model;
 
@@ -27,6 +26,19 @@ public class Guild
             antiSpamChannelId
         );
 
+        return Result<Guild, string>.Ok(guild);
+    }
+
+    public Result<Guild, string> SetAntiSpamChannelId(ulong? antiSpamChannelId)
+    {
+        if (antiSpamChannelId is not null && antiSpamChannelId <= 0)
+            return Result<Guild, string>.Fail("The anti-spam channel ID cannot be 0 or negative.");
+
+        var guild = new Guild(
+            Id,
+            antiSpamChannelId
+        );
+        
         return Result<Guild, string>.Ok(guild);
     }
 }
