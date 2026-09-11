@@ -30,7 +30,13 @@ public class DiscordSecurityMessageHandler (
         if (rawMessage.Channel is SocketGuildChannel channel)
         {
             ulong guildId = channel.Guild.Id;
+            string guildName = channel.Guild.Name;
+            
             ulong channelId = channel.Id;
+            string channelName = channel.Name;
+
+            ulong userid = rawMessage.Author.Id;
+            string userName = rawMessage.Author.Username;
 
             var channelAntiSpamResult = await securityService.GetChannelAntiSpam(guildId);
             if (channelAntiSpamResult.IsFailure)
@@ -42,8 +48,9 @@ public class DiscordSecurityMessageHandler (
             ulong channelAntiSpam = channelAntiSpamResult.Value;
             if (channelAntiSpam == channelId)
             {
-                logger.LogInformation("Channel antispam found.");
-                channel.Guild.GetTextChannel(channelAntiSpam)?.SendMessageAsync("Fuiste bloqueado por enviar spam");
+                logger.LogInformation($"Spam message blocked for user {userName}:{userid} on channel " + 
+                    $"{channelName}:{channelId} of the {guildName}:{guildId}.");
+                await channel.Guild.BanUserAsync(userId: userid, pruneSeconds: 60 * 20); // remove message before
             }
         }
     }
