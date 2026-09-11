@@ -3,6 +3,7 @@ using Discord.Interactions;
 using Discord.WebSocket;
 using Kradis.Domain.Discord.Core;
 using Kradis.Domain.Discord.Hosted;
+using Kradis.Domain.Discord.Module.Security.Service;
 using Kradis.Domain.Discord.Repository.Adapter;
 using Kradis.Domain.Discord.Repository.DbContext;
 using Kradis.Domain.Discord.Service;
@@ -81,6 +82,7 @@ builder.Services.AddHostedService<DiscordInitiatorHosted>();
 
 builder.Services.AddScoped<IDiscordGuildRepository, MySqlDiscordGuildRepository>();
 builder.Services.AddScoped<IDiscordGuildService, DiscordGuildService>();
+builder.Services.AddScoped<IDiscordSecurityService, DiscordSecurityService>();
 
 // builder.Services.AddHostedService<Worker>();
 

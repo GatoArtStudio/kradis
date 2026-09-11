@@ -42,6 +42,7 @@ public class DiscordSecurityCommand : InteractionModuleBase<SocketInteractionCon
             
             await using var scope = scopeFactory.CreateAsyncScope();
             var discordGuildService = scope.ServiceProvider.GetRequiredService<IDiscordGuildService>();
+            var discordSecurityService = scope.ServiceProvider.GetRequiredService<IDiscordSecurityService>();
             
             ulong guildId = Context.Guild.Id;
             
@@ -74,6 +75,7 @@ public class DiscordSecurityCommand : InteractionModuleBase<SocketInteractionCon
                 return;
             }
             
+            discordSecurityService.RemoveChannelAntiSpamFromCache(guildId);
             await FollowupAsync($"Successfully configured anti-spam channel: {guildResult.Value.AntiSpamChannelId}");
         }
     }
@@ -92,6 +94,7 @@ public class DiscordSecurityCommand : InteractionModuleBase<SocketInteractionCon
             
             await using var scope = scopeFactory.CreateAsyncScope();
             var discordGuildService = scope.ServiceProvider.GetRequiredService<IDiscordGuildService>();
+            var discordSecurityService = scope.ServiceProvider.GetRequiredService<IDiscordSecurityService>();
             
             ulong guildId = Context.Guild.Id;
             
@@ -126,6 +129,7 @@ public class DiscordSecurityCommand : InteractionModuleBase<SocketInteractionCon
                 return;
             }
             
+            discordSecurityService.RemoveChannelAntiSpamFromCache(guildId);
             await FollowupAsync($"Successfully unconfigured anti-spam channel: {oldAntiSpamChannel}");
         }
     }
