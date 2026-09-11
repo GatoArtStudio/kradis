@@ -35,7 +35,7 @@ public class DiscordSecurityMessageHandler (
             ulong channelId = channel.Id;
             string channelName = channel.Name;
 
-            ulong userid = rawMessage.Author.Id;
+            ulong userId = rawMessage.Author.Id;
             string userName = rawMessage.Author.Username;
 
             var channelAntiSpamResult = await securityService.GetChannelAntiSpam(guildId);
@@ -48,9 +48,9 @@ public class DiscordSecurityMessageHandler (
             ulong channelAntiSpam = channelAntiSpamResult.Value;
             if (channelAntiSpam == channelId)
             {
-                logger.LogInformation($"Spam message blocked for user {userName}:{userid} on channel " + 
+                logger.LogInformation($"Spam message blocked for user {userName}:{userId} on channel " + 
                     $"{channelName}:{channelId} of the {guildName}:{guildId}.");
-                await channel.Guild.BanUserAsync(userId: userid, pruneSeconds: 60 * 20); // remove message before
+                await channel.Guild.AddBanAsync(userId: userId, pruneDays: 1, reason: "Compromised or hacked account.");
             }
         }
     }
