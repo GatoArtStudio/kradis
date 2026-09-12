@@ -83,6 +83,7 @@ builder.Services.AddHostedService<DiscordInitiatorHosted>();
 builder.Services.AddScoped<IDiscordGuildRepository, MySqlDiscordGuildRepository>();
 builder.Services.AddScoped<IDiscordGuildService, DiscordGuildService>();
 builder.Services.AddScoped<IDiscordSecurityService, DiscordSecurityService>();
+builder.Services.AddScoped<DiscordEmbedService>();
 
 // builder.Services.AddHostedService<Worker>();
 

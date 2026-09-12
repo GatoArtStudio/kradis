@@ -1,6 +1,7 @@
 using Discord;
 using Discord.Interactions;
 using Kradis.Domain.Discord.Core;
+using Kradis.Domain.Discord.Service;
 
 namespace Kradis.Domain.Discord.Module.Security.Command;
 
@@ -43,6 +44,7 @@ public class DiscordSecurityCommand : InteractionModuleBase<SocketInteractionCon
             await using var scope = scopeFactory.CreateAsyncScope();
             var discordGuildService = scope.ServiceProvider.GetRequiredService<IDiscordGuildService>();
             var discordSecurityService = scope.ServiceProvider.GetRequiredService<IDiscordSecurityService>();
+            var discordEmbedService = scope.ServiceProvider.GetRequiredService<DiscordEmbedService>();
             
             ulong guildId = Context.Guild.Id;
             
@@ -76,6 +78,7 @@ public class DiscordSecurityCommand : InteractionModuleBase<SocketInteractionCon
             }
             
             discordSecurityService.RemoveChannelAntiSpamFromCache(guildId);
+            await channel.SendMessageAsync(embed: discordEmbedService.BuildWarningChannelAntiSpam());
             await FollowupAsync($"Successfully configured anti-spam channel: {guildResult.Value.AntiSpamChannelId}");
         }
     }
