@@ -26,6 +26,10 @@ builder.Services.AddMemoryCache();
 // Http
 // builder.Services.AddHttpClient();
 
+// Setup Environment
+EnvironmentService environmentService = new EnvironmentService();
+builder.Services.AddSingleton(environmentService);
+
 // Databases
 builder.Services.AddDbContext<MySqlGuildDbContext>((provider, options) =>
 {
@@ -44,10 +48,6 @@ builder.Services.AddDbContext<MySqlGuildDbContext>((provider, options) =>
         connectionString,
         ServerVersion.AutoDetect(connectionString));
 });
-
-// Setup Environment
-EnvironmentService environmentService = new EnvironmentService();
-builder.Services.AddSingleton(environmentService);
 
 // Setup Discord
 builder.Services.AddSingleton(
