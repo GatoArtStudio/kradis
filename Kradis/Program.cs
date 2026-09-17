@@ -33,16 +33,16 @@ builder.Services.AddSingleton(environmentService);
 // Databases
 builder.Services.AddDbContext<MySqlGuildDbContext>((provider, options) =>
 {
-    var environmentService = provider.GetRequiredService<EnvironmentService>();
+    var requiredService = provider.GetRequiredService<EnvironmentService>();
 
-    if (environmentService.EnvironmentVariables.DefaultConnectionStringMySql is null)
+    if (requiredService.EnvironmentVariables.DefaultConnectionStringMySql is null)
     {
         throw new InvalidOperationException(
             $"{EnvironmentService.KeyDefaultConnectionStringMySql} environment variable is not set. " +
             "Please set it to a valid MySQL connection string.");
     }
 
-    string connectionString = environmentService.EnvironmentVariables.DefaultConnectionStringMySql;
+    string connectionString = requiredService.EnvironmentVariables.DefaultConnectionStringMySql;
 
     options.UseMySql(
         connectionString,
